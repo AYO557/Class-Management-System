@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-darkpurple: var(--primary);
+  --color-lightpurple: var(--secondary);
+  --color-darkgraypurple: var(--tertiary);
+  --color-lightgraypurple: var(--quaternary);
+  --color-mainpurple: var(--quinary);
+}
+
+:root {
+  --primary: #340034;
+  --secondary: #a100a1;
+  --tertiary: #540054;
+  --quaternary: #850085;
+  --quinary: #6d006d;
+}
