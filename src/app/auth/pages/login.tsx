@@ -1,9 +1,12 @@
 import { Link } from "react-router";
 import FormHeader from "../components/form-header";
-import { FormInput } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
+import { FormInput } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import useLoginForm from "../hooks/useLoginForm";
 
 export default function LoginPage() {
+  const { formData, setFormData, handleSubmit } = useLoginForm();
+
   return (
     <>
       <FormHeader
@@ -14,7 +17,7 @@ export default function LoginPage() {
       />
 
       <div className="pt-14">
-        <form className="space-y-14">
+        <form onSubmit={handleSubmit} className="space-y-14">
           <div className="space-y-4">
             <FormInput
               label="Email"
@@ -23,6 +26,10 @@ export default function LoginPage() {
               placeholder="Enter your email"
               required
               id="email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
 
             <FormInput
@@ -32,6 +39,10 @@ export default function LoginPage() {
               placeholder="Enter your password"
               required
               id="password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
             />
 
             <p className="text-base text-white">
@@ -45,7 +56,12 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <Button>Login</Button>
+          <Button
+            type="submit"
+            disabled={formData.email === "" || formData.password === ""}
+          >
+            Login
+          </Button>
         </form>
 
         <div className="space-y-4 pt-4">

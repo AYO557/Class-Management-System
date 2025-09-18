@@ -1,99 +1,12 @@
-import { useState } from "react";
-import { Button } from "../../../components/ui/button";
-import { FormInput } from "../../../components/ui/input";
-import Separator from "../../../components/ui/separator";
-import TermsCheckbox from "../../../components/ui/terms-checkbox";
+import { Button } from "@/components/ui/button";
+import { FormInput } from "@/components/ui/input";
+import Separator from "@/components/ui/separator";
+import TermsCheckbox from "@/components/ui/terms-checkbox";
 import FormHeader from "../components/form-header";
-import { toast } from "sonner";
-
-interface RegisterForm {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  password: string;
-  confirm_password: string;
-  terms: boolean;
-}
-
-interface User extends RegisterForm {
-  id: number;
-}
+import useRegisterForm from "../hooks/useRegisterForm";
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState<RegisterForm>({
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone_number: "",
-    password: "",
-    confirm_password: "",
-    terms: false,
-  });
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (formData.password.trim() !== formData.confirm_password.trim()) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
-    if (formData.password.trim().length < 8) {
-      toast.error("Password must be at least 8 characters");
-      return;
-    }
-
-    signUserUp(formData);
-  };
-
-  const signUserUp = async (data: RegisterForm) => {
-    const existUsers = await getExistUsers();
-    const isUserExist = existUsers.find((user) => user.email === data.email);
-
-    if (isUserExist) {
-      toast.error("User already exists");
-      return;
-    }
-
-    try {
-      const newUser = await addUser(data);
-      console.log("new user:", newUser);
-      toast.success("User created successfully");
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.error(error);
-    }
-  };
-
-  const getExistUsers = async (): Promise<User[]> => {
-    try {
-      const users = await fetch("http://localhost:3000/users");
-      return users.json();
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.error(error);
-      return [];
-    }
-  };
-
-  const addUser = async (data: RegisterForm): Promise<User | undefined> => {
-    try {
-      const users = await fetch("http://localhost:3000/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      return users.json();
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.error(error);
-      return;
-    }
-  };
+  const { formData, setFormData, handleSubmit } = useRegisterForm();
 
   return (
     <>
