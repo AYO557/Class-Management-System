@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import useLoginForm from "../hooks/useLoginForm";
 
 export default function LoginPage() {
-  const { formData, setFormData, handleSubmit } = useLoginForm();
+  const { formData, setFormData, handleSubmit, isLoading } = useLoginForm();
 
   return (
     <>
@@ -58,6 +58,7 @@ export default function LoginPage() {
 
           <Button
             type="submit"
+            isLoading={isLoading}
             disabled={formData.email === "" || formData.password === ""}
           >
             Login

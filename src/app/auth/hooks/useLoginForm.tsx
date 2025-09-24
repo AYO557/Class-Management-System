@@ -1,45 +1,42 @@
 import { useState } from "react";
 import type { LoginForm } from "../libs/types";
-import { validateEmail, validatePassword } from "../utils/validateForm";
 import useLoginUserApi from "../api/useLoginUser";
-import useToastMessage from "@/hooks/useToastMessage";
+import useAuthStore from "../store/authStore";
+import { useNavigate } from "react-router";
 
 export default function useLoginForm() {
-  const { toastError } = useToastMessage();
+  const navigate = useNavigate();
+  const { setUser } = useAuthStore();
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { loginUser } = useLoginUserApi();
+  const { loginUser } = useLoginUserApi({
+    setIsLoading,
+  });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const isValid = validateForm();
+    const user = await loginUser(formData);
+    if (user) {
+      setFormData({
+        email: "",
+        password: "",
+      });
 
-    if (!isValid) return;
-    loginUser(formData);
-  };
-
-  const validateForm = () => {
-    const { email, password } = formData;
-
-    const validators = [validateEmail(email), validatePassword(password)];
-
-    for (const error of validators) {
-      if (error) {
-        toastError(error);
-        return false; // exits validateForm properly
-      }
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+      navigate("/dashboard");
     }
-
-    return true;
   };
 
   return {
     formData,
     setFormData,
     handleSubmit,
+    isLoading,
   };
 }

@@ -1,32 +1,48 @@
-import { NavLink, Outlet } from "react-router";
+import { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router";
+import useAuth from "../auth/hooks/useAuth";
+import Logo from "./components/logo";
+import Menu from "./components/menu";
+import LogOutButton from "./components/logout-button";
 
 export default function MainLayout() {
-  return (
-    <div className="flex flex-col gap-10 p-40">
-      <menu className="flex justify-center text-center gap-4 text-2xl">
-        <li className="hover:underline cursor-pointer">
-          <NavLink
-            to="/auth/login"
-            className={({ isActive }) =>
-              `${isActive ? "font-bold text-blue-600" : ""}`
-            }
-          >
-            Login
-          </NavLink>
-        </li>
-        <li className="hover:underline cursor-pointer">
-          <NavLink
-            to="/auth/register"
-            className={({ isActive }) =>
-              `${isActive ? "font-bold text-blue-600" : ""}`
-            }
-          >
-            Register
-          </NavLink>
-        </li>
-      </menu>
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { logUserIn, logUserOut } = useAuth();
+  const userData = localStorage.getItem("user");
+  const user = userData ? JSON.parse(userData) : null;
 
-      <div className="border-4 border-blue-800 p-10">
+  useEffect(() => {
+    if (!user) {
+      logUserOut();
+    } else {
+      logUserIn(user);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // handle redirect to dashboard from /
+  useEffect(() => {
+    if (pathname === "/") {
+      navigate("/dashboard");
+    }
+  }, [pathname, navigate]);
+
+  if (!user) return null;
+
+  return (
+    <div className="grid grid-cols-6 h-screen bg-blue-400">
+      <div className="col-span-1 h-full bg-darkpurple flex flex-col justify-between">
+        <div className="h-[50%] flex flex-col justify-between">
+          <Logo />
+
+          <Menu />
+        </div>
+
+        <LogOutButton />
+      </div>
+
+      <div className="col-span-5 h-full bg-lightpurple">
         <Outlet />
       </div>
     </div>

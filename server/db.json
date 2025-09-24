@@ -7,26 +7,6 @@
       "email": "johndoe@gmail.com",
       "phone_number": "08012345678",
       "password": "123456"
-    },
-    {
-      "id": "927a",
-      "first_name": "John",
-      "last_name": "Doe",
-      "email": "officialayscript@gmail.com",
-      "phone_number": "1234567",
-      "password": "abcABC123,",
-      "confirm_password": "abcABC123,",
-      "terms": true
-    },
-    {
-      "id": "451f",
-      "first_name": "John",
-      "last_name": "Doe",
-      "email": "test@gmail.com",
-      "phone_number": "1234567",
-      "password": "abcABC123,",
-      "confirm_password": "abcABC123,",
-      "terms": true
     }
   ]
 }

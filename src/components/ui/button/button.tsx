@@ -4,6 +4,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "outline" | "ghost" | "disabled";
   type?: "button" | "submit" | "reset";
+  isLoading?: boolean;
 }
 
 export default function Button({
@@ -11,6 +12,7 @@ export default function Button({
   variant = "primary",
   type = "button",
   disabled = false,
+  isLoading = false,
   ...props
 }: ButtonProps) {
   variant = disabled ? "disabled" : variant;
@@ -29,10 +31,18 @@ export default function Button({
           : "bg-transparent text-lightpurple cursor-pointer"
       }`}
       type={type}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       {...props}
     >
-      {children}
+      {isLoading ? <LoadingSpinner /> : children}
     </button>
+  );
+}
+
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center">
+      <div className="w-4 h-4 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
+    </div>
   );
 }

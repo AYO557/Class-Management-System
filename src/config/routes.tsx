@@ -1,11 +1,29 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import MainLayout from "../app/main/layout";
-import AuthLayout from "../app/auth/layout";
-import NotFoundPage from "../app/pages/not-found";
-import LoginPage from "../app/auth/pages/login";
-import RegisterPage from "../app/auth/pages/register";
-import ForgotPasswordPage from "../app/auth/pages/forgot-password";
-import ResetPasswordPage from "../app/auth/pages/reset-password";
+import { lazy } from "react";
+// import MainLayout from "../app/main/layout";
+// import AuthLayout from "../app/auth/layout";
+// import NotFoundPage from "../app/pages/not-found";
+// import LoginPage from "../app/auth/pages/login";
+// import RegisterPage from "../app/auth/pages/register";
+// import ForgotPasswordPage from "../app/auth/pages/forgot-password";
+// import ResetPasswordPage from "../app/auth/pages/reset-password";
+
+//! layout
+const MainLayout = lazy(() => import("@/app/main/layout"));
+const AuthLayout = lazy(() => import("@/app/auth/layout"));
+
+//! Auth
+const LoginPage = lazy(() => import("@/app/auth/pages/login"));
+const RegisterPage = lazy(() => import("@/app/auth/pages/register"));
+const ForgotPasswordPage = lazy(
+  () => import("@/app/auth/pages/forgot-password")
+);
+const ResetPasswordPage = lazy(() => import("@/app/auth/pages/reset-password"));
+
+//! Main
+const DashboardPage = lazy(() => import("@/app/main/pages/dashboard"));
+
+const NotFoundPage = lazy(() => import("@/app/pages/not-found"));
 
 const router = createBrowserRouter([
   {
@@ -14,11 +32,27 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        Component: () => <div>Dashboard</div>,
+        Component: DashboardPage,
       },
       {
         path: "settings",
         Component: () => <div>Settings</div>,
+      },
+      {
+        path: "profile",
+        Component: () => <div>Profile</div>,
+      },
+      {
+        path: "students",
+        Component: () => <div>Students</div>,
+      },
+      {
+        path: "teachers",
+        Component: () => <div>Teachers</div>,
+      },
+      {
+        path: "classes",
+        Component: () => <div>Classes</div>,
       },
     ],
   },
