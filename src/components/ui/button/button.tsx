@@ -5,6 +5,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "disabled";
   type?: "button" | "submit" | "reset";
   isLoading?: boolean;
+  startAdornment?: React.ReactNode;
+  endAdornment?: React.ReactNode;
 }
 
 export default function Button({
@@ -13,28 +15,32 @@ export default function Button({
   type = "button",
   disabled = false,
   isLoading = false,
+  startAdornment,
+  endAdornment,
   ...props
 }: ButtonProps) {
   variant = disabled ? "disabled" : variant;
 
   return (
     <button
-      className={`w-full h-10 rounded-lg font-bold ${
+      className={`w-full h-9 rounded-lg font-bold px-4 flex items-center justify-center gap-2 transition-colors duration-200 ${
         variant === "primary"
-          ? "bg-lightpurple text-white cursor-pointer"
+          ? "bg-lightpurple text-white cursor-pointer hover:bg-lightgraypurple"
           : variant === "secondary"
-          ? "bg-white text-lightpurple cursor-pointer"
+          ? "bg-darkpurple text-white cursor-pointer hover:bg-darkgraypurple"
           : variant === "outline"
-          ? "border border-lightgraypurple text-white cursor-pointer"
+          ? "border border-lightgraypurple text-white cursor-pointer hover:border-lightgraypurple"
           : variant === "disabled"
           ? "bg-transparent text-white cursor-not-allowed"
-          : "bg-transparent text-lightpurple cursor-pointer"
+          : "bg-transparent text-lightpurple cursor-pointer hover:bg-lightgraypurple"
       }`}
       type={type}
       disabled={disabled || isLoading}
       {...props}
     >
+      {startAdornment}
       {isLoading ? <LoadingSpinner /> : children}
+      {endAdornment}
     </button>
   );
 }

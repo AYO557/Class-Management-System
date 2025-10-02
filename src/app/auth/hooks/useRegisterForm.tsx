@@ -11,8 +11,10 @@ import {
 } from "../utils/validateForm";
 import useRegisterUserApi from "../api/useRegisterUser";
 import useToastMessage from "@/hooks/useToastMessage";
+import { useNavigate } from "react-router";
 
 export default function useRegisterForm() {
+  const navigate = useNavigate();
   const { toastError } = useToastMessage();
   const [formData, setFormData] = useState<RegisterForm>({
     first_name: "",
@@ -24,7 +26,21 @@ export default function useRegisterForm() {
     terms: false,
   });
 
-  const { signUserUp } = useRegisterUserApi();
+  const { signUserUp } = useRegisterUserApi({
+    onSuccess: () => {
+      setFormData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone_number: "",
+        password: "",
+        confirm_password: "",
+        terms: false,
+      });
+
+      navigate("/auth/login");
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +48,7 @@ export default function useRegisterForm() {
     const isValid = validateForm();
 
     if (!isValid) return;
+
     signUserUp(formData);
   };
 

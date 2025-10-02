@@ -17,9 +17,9 @@ export default function RegisterPage() {
         link="/auth/login"
       />
 
-      <div className="pt-14">
-        <form className="space-y-14" onSubmit={handleSubmit}>
-          <div className="space-y-4">
+      <div className="pt-10">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="space-y-2">
             <div className="flex gap-2">
               <FormInput
                 label="First name"

@@ -1,12 +1,20 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "first_name": "John",
       "last_name": "Doe",
       "email": "johndoe@gmail.com",
       "phone_number": "08012345678",
       "password": "123456"
+    },
+    {
+      "id": "dbca",
+      "first_name": "Ayomide",
+      "last_name": "Script",
+      "email": "officialayscript@gmail.com",
+      "phone_number": "1234567891",
+      "password": "abcABC123,"
     }
   ]
 }

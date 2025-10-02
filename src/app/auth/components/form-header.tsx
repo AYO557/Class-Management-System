@@ -19,8 +19,8 @@ export default function FormHeader({
   const navigate = useNavigate();
 
   return (
-    <div className="space-y-10">
-      <h1 className="text-5xl font-medium flex gap-2 items-center">
+    <div className="space-y-4">
+      <h1 className="text-3xl font-medium flex gap-2 items-center">
         <ArrowBigLeft
           size={30}
           className={
@@ -37,7 +37,10 @@ export default function FormHeader({
         <p className="text-lg">
           {desc}{" "}
           {link && (
-            <Link to={link} className="text-lightpurple hover:underline">
+            <Link
+              to={link}
+              className="text-lightpurple font-bold hover:underline"
+            >
               {linkText}
             </Link>
           )}

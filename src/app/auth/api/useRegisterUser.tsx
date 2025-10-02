@@ -1,9 +1,17 @@
-import type { RegisterForm } from "../libs/types";
+import type { RegisterForm, User } from "../libs/types";
 import useAddUserApi from "./useAddUser";
 import useGetUsersApi from "./useGetUsers";
 import useToastMessage from "@/hooks/useToastMessage";
 
-export default function useRegisterUserApi() {
+interface UseRegisterUserApiProps {
+  onSuccess?: (user: User) => void;
+  onError?: (error: Error) => void;
+}
+
+export default function useRegisterUserApi({
+  onSuccess,
+  onError,
+}: UseRegisterUserApiProps = {}) {
   const { toastError, toastSuccess } = useToastMessage();
 
   const { getExistUsers } = useGetUsersApi({
@@ -29,11 +37,13 @@ export default function useRegisterUserApi() {
 
     //! create user
     try {
-      await addUser(data);
+      const user = await addUser(data);
 
       toastSuccess("User created successfully");
+      onSuccess?.(user as User);
     } catch (error) {
       toastError("Something went wrong");
+      onError?.(error as Error);
       console.error(error);
     }
   };

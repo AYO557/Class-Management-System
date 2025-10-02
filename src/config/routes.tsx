@@ -22,6 +22,7 @@ const ResetPasswordPage = lazy(() => import("@/app/auth/pages/reset-password"));
 
 //! Main
 const DashboardPage = lazy(() => import("@/app/main/pages/dashboard"));
+const StudentsPage = lazy(() => import("@/app/main/students/pages/students"));
 
 const NotFoundPage = lazy(() => import("@/app/pages/not-found"));
 
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
       },
       {
         path: "students",
-        Component: () => <div>Students</div>,
+        Component: StudentsPage,
       },
       {
         path: "teachers",

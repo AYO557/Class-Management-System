@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import useAuth from "../auth/hooks/useAuth";
-import Logo from "./components/logo";
-import Menu from "./components/menu";
-import LogOutButton from "./components/logout-button";
+import DesktopNav from "./components/desktop-nav";
+import MobileNav from "./components/mobile-nav";
 
 export default function MainLayout() {
   const navigate = useNavigate();
@@ -12,8 +11,9 @@ export default function MainLayout() {
   const userData = localStorage.getItem("user");
   const user = userData ? JSON.parse(userData) : null;
 
+  //! handle user authorization
   useEffect(() => {
-    if (!user) {
+    if (user === null) {
       logUserOut();
     } else {
       logUserIn(user);
@@ -21,29 +21,35 @@ export default function MainLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // handle redirect to dashboard from /
+  //! handle redirect to dashboard from /
   useEffect(() => {
-    if (pathname === "/") {
+    if (pathname === "/" && user !== null) {
       navigate("/dashboard");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, navigate]);
 
-  if (!user) return null;
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-black text-white">
+        Loading...
+      </div>
+    );
+  }
+
+  if (user === null) {
+    return <Navigate to="/auth/login" />;
+  }
 
   return (
-    <div className="grid grid-cols-6 h-screen bg-blue-400">
-      <div className="col-span-1 h-full bg-darkpurple flex flex-col justify-between">
-        <div className="h-[50%] flex flex-col justify-between">
-          <Logo />
+    <div className="lg:grid lg:grid-cols-6 h-screen">
+      <DesktopNav />
+      <MobileNav />
 
-          <Menu />
+      <div className="col-span-5 lg:h-full h-[93%] overflow-auto lg:min-h-auto bg-lightpurple">
+        <div className="h-full lg:px-10 max-w-[1400px] mx-auto p-4">
+          <Outlet />
         </div>
-
-        <LogOutButton />
-      </div>
-
-      <div className="col-span-5 h-full bg-lightpurple">
-        <Outlet />
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ function validateEmail(email: string): string {
 function validatePassword(password: string) {
   if (!password) return "Password is required";
   if (password.length < 8) return "Password must be at least 8 characters";
+  if (password.split(" ").length > 1) return "Password must not contain spaces";
   if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password))
     return "Password must contain uppercase, lowercase, and number";
   return "";
