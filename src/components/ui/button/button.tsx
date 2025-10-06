@@ -23,7 +23,7 @@ export default function Button({
 
   return (
     <button
-      className={`w-full h-9 rounded-lg font-bold px-4 flex items-center justify-center gap-2 transition-colors duration-200 ${
+      className={`w-full h-9 rounded-lg xl:font-bold lg:font-medium px-4 flex items-center justify-center gap-2 transition-colors duration-200 ${
         variant === "primary"
           ? "bg-lightpurple text-white cursor-pointer hover:bg-lightgraypurple"
           : variant === "secondary"

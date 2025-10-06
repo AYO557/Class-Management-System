@@ -14,7 +14,7 @@ export default function StatsCard({ title, value }: StatsCardProps) {
             <ChartBarIncreasing size={20} />
           </div>
           <div>
-            <h3 className="text-lg font-medium">{title}</h3>
+            <h3 className="xl:text-lg font-medium">{title}</h3>
             <p className="text-sm">{value}</p>
           </div>
         </div>

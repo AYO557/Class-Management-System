@@ -42,12 +42,14 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="lg:grid lg:grid-cols-6 h-screen">
+    <div className="lg:grid lg:grid-cols-6 h-screen bg-[#fff]">
+      {/* Sidebar */}
       <DesktopNav />
       <MobileNav />
 
-      <div className="col-span-5 lg:h-full h-[93%] overflow-auto lg:min-h-auto bg-lightpurple">
-        <div className="h-full lg:px-10 max-w-[1400px] mx-auto p-4">
+      {/* Main Content */}
+      <div className="col-span-5 flex flex-col">
+        <div className="flex-1 overflow-y-auto px-5 max-w-[1400px] mx-auto py-4 w-full text-darkpurple font-main">
           <Outlet />
         </div>
       </div>

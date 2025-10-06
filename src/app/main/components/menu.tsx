@@ -7,7 +7,7 @@ interface MenuProps {
 
 export default function Menu({ onMenuChange }: MenuProps) {
   return (
-    <div className="flex flex-col items-center xl:justify-center justify-start xl:h-full xl:py-0 py-10 xl:px-0 px-10 gap-4">
+    <div className="flex flex-col items-center justify-center lg:h-full xl:py-0 py-10 xl:px-0 px-5 gap-4">
       {menuItems.map((item) => {
         return (
           <NavLink
@@ -15,10 +15,10 @@ export default function Menu({ onMenuChange }: MenuProps) {
             to={item.path}
             onClick={() => onMenuChange?.(item.name)}
             className={({ isActive }) =>
-              `w-full h-10 flex items-center justify-center gap-4 font-bold ${
+              `w-full h-10 flex items-center xl:justify-center lg:justify-start gap-4 md:font-medium font-bold ${
                 isActive
-                  ? "text-white text-lg font-bold"
-                  : "text-gray-400 text-lg"
+                  ? "text-white xl:text-lg md:text-sm font-bold"
+                  : "text-gray-400 xl:text-lg md:text-sm"
               }`
             }
           >

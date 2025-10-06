@@ -1,3 +1,6 @@
+/* Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&family=Teachers:ital,wght@0,400..800;1,400..800&display=swap");
+
 @import "tailwindcss";
 
 @theme inline {
@@ -6,6 +9,9 @@
   --color-darkgraypurple: var(--tertiary);
   --color-lightgraypurple: var(--quaternary);
   --color-mainpurple: var(--quinary);
+
+  --font-main: var(--main-font);
+  --font-secondary: var(--secondary-font);
 }
 
 :root {
@@ -14,4 +20,12 @@
   --tertiary: #540054;
   --quaternary: #850085;
   --quinary: #6d006d;
+
+  /* font */
+  --secondary-font: "Teachers";
+  --main-font: "Gabarito";
+}
+
+.red {
+  background-color: green;
 }

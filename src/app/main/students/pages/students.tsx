@@ -1,27 +1,98 @@
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/app/main/components/page-header";
 import { Plus } from "lucide-react";
-import StatsCard from "../../components/stats-card";
 import { mockStudentStats } from "../libs/mock";
+import StatsCardsSection from "../../components/stat-cards-section";
+import studentsData from "../libs/students-data.json";
+import { useNavigate } from "react-router";
+import CustomTable from "../../components/table";
+import type { Column } from "../../components/table";
 
 export default function StudentsPage() {
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+    },
+    {
+      title: "Class",
+      dataIndex: "class",
+      key: "class",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Parent",
+      dataIndex: "parent",
+      key: "parent",
+    },
+    {
+      title: "Parent Phone Number",
+      dataIndex: "parent_phone",
+      key: "parent_phone",
+    },
+    {
+      title: "Parent Email",
+      dataIndex: "parent_email",
+      key: "parent_email",
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+    },
+  ] as Column<(typeof studentsData)[0]>[];
+
+  const navigate = useNavigate();
+
   return (
-    <div className="">
+    <>
       <PageHeader
         title="Students"
         desc="Manage your students"
         endContent={
-          <Button startAdornment={<Plus size={20} />} variant="secondary">
+          <Button
+            onClick={() => navigate("/students/create")}
+            startAdornment={<Plus size={20} />}
+            variant="secondary"
+          >
             Add Student
           </Button>
         }
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-2 gap-4 mt-10">
-        {mockStudentStats.map((item) => (
-          <StatsCard key={item.title} {...item} />
-        ))}
-      </div>
-    </div>
+      <StatsCardsSection data={mockStudentStats} />
+
+      <CustomTable
+        columns={columns}
+        data={studentsData}
+        showSearch
+        searchPlaceholder="search studnet..."
+      />
+    </>
   );
 }

@@ -1,12 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy } from "react";
-// import MainLayout from "../app/main/layout";
-// import AuthLayout from "../app/auth/layout";
-// import NotFoundPage from "../app/pages/not-found";
-// import LoginPage from "../app/auth/pages/login";
-// import RegisterPage from "../app/auth/pages/register";
-// import ForgotPasswordPage from "../app/auth/pages/forgot-password";
-// import ResetPasswordPage from "../app/auth/pages/reset-password";
 
 //! layout
 const MainLayout = lazy(() => import("@/app/main/layout"));
@@ -21,8 +14,14 @@ const ForgotPasswordPage = lazy(
 const ResetPasswordPage = lazy(() => import("@/app/auth/pages/reset-password"));
 
 //! Main
-const DashboardPage = lazy(() => import("@/app/main/pages/dashboard"));
+const DashboardPage = lazy(
+  () => import("@/app/main/dashboard/pages/dashboard")
+);
 const StudentsPage = lazy(() => import("@/app/main/students/pages/students"));
+const CreateStudentPage = lazy(
+  () => import("@/app/main/students/pages/create-student")
+);
+const ClassesPage = lazy(() => import("@/app/main/class/pages/classes"));
 
 const NotFoundPage = lazy(() => import("@/app/pages/not-found"));
 
@@ -45,7 +44,16 @@ const router = createBrowserRouter([
       },
       {
         path: "students",
-        Component: StudentsPage,
+        children: [
+          {
+            path: "",
+            Component: StudentsPage,
+          },
+          {
+            path: "create",
+            Component: CreateStudentPage,
+          },
+        ],
       },
       {
         path: "teachers",
@@ -53,7 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: "classes",
-        Component: () => <div>Classes</div>,
+        Component: ClassesPage,
       },
     ],
   },

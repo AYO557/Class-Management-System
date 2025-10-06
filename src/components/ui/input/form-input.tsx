@@ -31,7 +31,7 @@ export default function FormInput({
           }
           name={name}
           id={id}
-          className="w-full h-9 rounded-lg bg-darkgraypurple p-2"
+          className="w-full h-9 rounded-lg bg-darkgraypurple text-white p-2"
           placeholder={placeholder}
           required={required}
           {...props}

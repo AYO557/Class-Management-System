@@ -1,0 +1,54 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@gmail.com",
+        "phone": "08012345678",
+        "age": 10,
+        "gender": "Male",
+        "class": "JSS 1",
+        "address": "123, Main Street, Lagos",
+        "parent": "Jane Doe",
+        "parent_phone": "08012345678",
+        "parent_email": "jane@gmail.com"
+    },
+    {
+        "id": 2,
+        "name": "Jane Doe",
+        "email": "jane@gmail.com",
+        "phone": "08012345678",
+        "age": 10,
+        "gender": "Female",
+        "class": "JSS 1",
+        "address": "123, Main Street, Lagos",
+        "parent": "John Doe",
+        "parent_phone": "08012345678",
+        "parent_email": "john@gmail.com"
+    },
+    {
+        "id": 3,
+        "name": "John Doe",
+        "email": "john@gmail.com",
+        "phone": "08012345678",
+        "age": 10,
+        "gender": "Male",
+        "class": "JSS 1",
+        "address": "123, Main Street, Lagos",
+        "parent": "Jane Doe",
+        "parent_phone": "08012345678",
+        "parent_email": "jane@gmail.com"
+    },
+    {
+        "id": 4,
+        "name": "Jane Doe",
+        "email": "jane@gmail.com",
+        "phone": "08012345678",
+        "age": 10,
+        "gender": "Female",
+        "class": "JSS 1",
+        "address": "123, Main Street, Lagos",
+        "parent": "John Doe",
+        "parent_phone": "08012345678",
+        "parent_email": "john@gmail.com"
+    }
+]
