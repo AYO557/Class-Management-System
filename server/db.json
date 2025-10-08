@@ -15,6 +15,14 @@
       "email": "officialayscript@gmail.com",
       "phone_number": "1234567891",
       "password": "abcABC123,"
+    },
+    {
+      "id": "db1a",
+      "first_name": "Ayomide",
+      "last_name": "Script",
+      "email": "officialayscript20@gmail.com",
+      "phone_number": "1234567891",
+      "password": "abcABC123,"
     }
   ]
 }
