@@ -7,7 +7,7 @@ interface StatsCardProps {
 
 export default function StatsCard({ title, value }: StatsCardProps) {
   return (
-    <div className="bg-darkpurple text-white rounded-lg p-4">
+    <div className="bg-darkpurple/90 text-white rounded-lg p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="p-3 rounded-lg bg-lightgraypurple">

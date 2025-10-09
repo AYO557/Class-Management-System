@@ -21,6 +21,9 @@ const StudentsPage = lazy(() => import("@/app/main/students/pages/students"));
 const CreateStudentPage = lazy(
 	() => import("@/app/main/students/pages/create-student")
 );
+const EditStudentPage = lazy(
+  () => import("@/app/main/students/pages/edit-student")
+);
 const ClassesPage = lazy(() => import("@/app/main/class/pages/classes"));
 const InstructorsPage = lazy(
 	() => import("@/app/main/instructors/pages/instructors")
@@ -105,6 +108,79 @@ const router = createBrowserRouter([
 		path: "*",
 		Component: NotFoundPage,
 	},
+  {
+    path: "/",
+    Component: MainLayout,
+    children: [
+      {
+        path: "dashboard",
+        Component: DashboardPage,
+      },
+      {
+        path: "settings",
+        Component: () => <div>Settings</div>,
+      },
+      {
+        path: "profile",
+        Component: () => <div>Profile</div>,
+      },
+      {
+        path: "students",
+        children: [
+          {
+            path: "",
+            Component: StudentsPage,
+          },
+          {
+            path: "create",
+            Component: CreateStudentPage,
+          },
+          {
+            path: ":studentId",
+            Component: () => <div>Student Details</div>,
+          },
+          {
+            path: ":studentId/edit",
+            Component: EditStudentPage,
+          },
+        ],
+      },
+      {
+        path: "teachers",
+        Component: () => <div>Teachers</div>,
+      },
+      {
+        path: "classes",
+        Component: ClassesPage,
+      },
+    ],
+  },
+  {
+    path: "auth",
+    Component: AuthLayout,
+    children: [
+      {
+        path: "login",
+        Component: LoginPage,
+      },
+      {
+        path: "register",
+        Component: RegisterPage,
+      },
+      {
+        path: "forgot-password",
+        Component: ForgotPasswordPage,
+      },
+      {
+        path: "reset-password",
+        Component: ResetPasswordPage,
+      },
+    ],
+  },
+  {
+    path: "*",
+    Component: NotFoundPage,
+  },
 ]);
 
 export default function RoutesConfig() {

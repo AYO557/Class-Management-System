@@ -7,13 +7,12 @@ import ParentDetailsForm from "../components/parent-details-form";
 import ReviewDetails from "../components/review-details";
 import Confirmation from "../components/confirmation";
 
-const steps = ["Student Details", "Parent Details", "Review", "Confirmation"];
+const steps = ["Student Details", "Parent Details", "Review"];
 
-export default function CreateStudentPage() {
+export default function EditStudentPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     // Student Details
-    profilePicture: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -66,7 +65,7 @@ export default function CreateStudentPage() {
       <div className="container mx-auto max-w-4xl px-4">
         <PageHeader
           showBack
-          title="Enroll New Student"
+          title="Edit Student Details"
           desc="Complete the student enrollment process step by step"
         />
 

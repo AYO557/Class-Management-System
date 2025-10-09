@@ -87,12 +87,22 @@ export default function StudentsPage() {
 
 			<StatsCardsSection data={mockStudentStats} />
 
-			<CustomTable
-				columns={columns}
-				data={studentsData}
-				showSearch
-				searchPlaceholder='search student...'
-			/>
-		</>
-	);
+      <CustomTable
+        columns={columns}
+        data={studentsData}
+        actions={[
+          {
+            label: "View",
+            onClick: (record) => navigate(`/students/${record.id}`),
+          },
+          {
+            label: "Edit",
+            onClick: (record) => navigate(`/students/${record.id}/edit`),
+          },
+        ]}
+        showSearch
+        searchPlaceholder="search student..."
+      />
+    </>
+  );
 }
