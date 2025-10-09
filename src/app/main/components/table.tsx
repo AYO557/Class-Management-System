@@ -212,7 +212,7 @@ export default function CustomTable<T extends { id: string | number }>({
   return (
     <div className="mt-10">
       {(caption || showSearch) && (
-        <div className="flex items-center justify-between mb-4 px-4">
+        <div className="flex items-center justify-between mb-4"> 
           {caption && (
             <h2 className="text-xl font-bold text-darkpurple">{caption}</h2>
           )}
