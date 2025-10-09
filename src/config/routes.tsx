@@ -25,6 +25,7 @@ const ClassesPage = lazy(() => import("@/app/main/class/pages/classes"));
 const InstructorsPage = lazy(
 	() => import("@/app/main/instructors/pages/instructors")
 );
+const CreateInstructorsPage = lazy(() => import("@/app/main/instructors/pages/create-instructors"))
 
 const NotFoundPage = lazy(() => import("@/app/pages/not-found"));
 
@@ -60,7 +61,17 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "instructors",
-				Component: InstructorsPage,
+				children: [
+					{
+						path: "",
+						Component: InstructorsPage
+					},
+					{
+						path: "create",
+						Component: CreateInstructorsPage
+					}
+				]
+				
 			},
 			{
 				path: "classes",

@@ -27,7 +27,7 @@ export default function PageHeader({
   };
 
   return (
-    <div className="flex justify-between items-end font-main">
+    <div className="flex justify-between items-end font-main ">
       <div className="flex items-center gap-2">
         {showBack && (
           <ArrowLeft className="cursor-pointer" onClick={handleBackClick} />

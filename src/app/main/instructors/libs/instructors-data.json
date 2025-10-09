@@ -1,0 +1,38 @@
+[
+	{
+		"id": "1",
+		"name": "Marylyn Volt",
+		"phone_number": "08023486912",
+		"email": "volt@gmail.com",
+		"status": "active",
+		"class": "HTML and CSS",
+		"gender": "Female"
+	},
+	{
+		"id": "2",
+		"name": "David Carlson",
+		"phone_number": "08023292900",
+		"email": "thecarlson@gmail.com",
+		"status": "active",
+		"class": "React",
+		"gender": "Male"
+	},
+	{
+		"id": "3",
+		"name": "Mormont Azure",
+		"phone_number": "09172384677",
+		"email": "iammormont10@gmail.com",
+		"status": "suspended",
+		"class": "Graphic Design",
+		"gender": "Male"
+	},
+	{
+		"id": "4",
+		"name": "Stanley Baratheon",
+		"phone_number": "08023212326",
+		"email": "stanleythegreat@gmail.com",
+		"status": "active",
+		"class": "Javascript",
+		"gender": "Male"
+	}
+]
