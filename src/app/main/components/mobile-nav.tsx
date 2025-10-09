@@ -28,7 +28,7 @@ export default function MobileNav() {
         </div>
 
         <nav
-          className={`absolute top-full left-0 w-[100vw] bg-darkgraypurple transition-all duration-300 flex flex-col justify-between ${
+          className={`absolute top-full z-50 left-0 w-[100vw] bg-darkgraypurple transition-all duration-300 flex flex-col justify-between ${
             isOpen ? "h-[90vh]" : "h-0"
           } overflow-hidden`}
         >
@@ -40,16 +40,3 @@ export default function MobileNav() {
     </div>
   );
 }
-
-/*
-<div>
-            <X
-              onClick={() => setIsOpen(!isOpen)}
-              className="w-6 h-6 cursor-pointer"
-            />
-            <Menu
-              onClick={() => setIsOpen(!isOpen)}
-              className="w-6 h-6 cursor-pointer"
-            />
-        </div>
-*/

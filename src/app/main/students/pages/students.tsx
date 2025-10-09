@@ -90,8 +90,18 @@ export default function StudentsPage() {
       <CustomTable
         columns={columns}
         data={studentsData}
+        actions={[
+          {
+            label: "View",
+            onClick: (record) => navigate(`/students/${record.id}`),
+          },
+          {
+            label: "Edit",
+            onClick: (record) => navigate(`/students/${record.id}/edit`),
+          },
+        ]}
         showSearch
-        searchPlaceholder="search studnet..."
+        searchPlaceholder="search student..."
       />
     </>
   );

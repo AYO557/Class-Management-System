@@ -21,6 +21,9 @@ const StudentsPage = lazy(() => import("@/app/main/students/pages/students"));
 const CreateStudentPage = lazy(
   () => import("@/app/main/students/pages/create-student")
 );
+const EditStudentPage = lazy(
+  () => import("@/app/main/students/pages/edit-student")
+);
 const ClassesPage = lazy(() => import("@/app/main/class/pages/classes"));
 
 const NotFoundPage = lazy(() => import("@/app/pages/not-found"));
@@ -52,6 +55,14 @@ const router = createBrowserRouter([
           {
             path: "create",
             Component: CreateStudentPage,
+          },
+          {
+            path: ":studentId",
+            Component: () => <div>Student Details</div>,
+          },
+          {
+            path: ":studentId/edit",
+            Component: EditStudentPage,
           },
         ],
       },

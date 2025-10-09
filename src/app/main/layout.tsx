@@ -48,8 +48,8 @@ export default function MainLayout() {
       <MobileNav />
 
       {/* Main Content */}
-      <div className="col-span-5 flex flex-col">
-        <div className="flex-1 overflow-y-auto px-5 max-w-[1400px] mx-auto py-4 w-full text-darkpurple font-main">
+      <div className="col-span-5 flex flex-col overflow-y-auto">
+        <div className="flex-1 overflow-y-auto xl:overflow-y-clip px-5 max-w-[1400px] mx-auto py-4 w-full text-darkpurple font-main">
           <Outlet />
         </div>
       </div>
