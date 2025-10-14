@@ -17,7 +17,10 @@ const ResetPasswordPage = lazy(() => import("@/app/auth/pages/reset-password"));
 const DashboardPage = lazy(
   () => import("@/app/main/dashboard/pages/dashboard")
 );
-const StudentsPage = lazy(() => import("@/app/main/students/pages/students"));
+const StudentsDashboardPage = lazy(
+  () => import("@/app/main/students/pages/students-dashboard")
+);
+const StudentPage = lazy(() => import("@/app/main/students/pages/student"));
 const CreateStudentPage = lazy(
   () => import("@/app/main/students/pages/create-student")
 );
@@ -50,7 +53,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            Component: StudentsPage,
+            Component: StudentsDashboardPage,
           },
           {
             path: "create",
@@ -58,7 +61,7 @@ const router = createBrowserRouter([
           },
           {
             path: ":studentId",
-            Component: () => <div>Student Details</div>,
+            Component: StudentPage,
           },
           {
             path: ":studentId/edit",
