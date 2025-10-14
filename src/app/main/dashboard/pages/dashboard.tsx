@@ -1,10 +1,12 @@
 import useAuth from "@/app/auth/hooks/useAuth";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { userData } = useAuth();
   return (
     <div>
-      <h1>Welcome, {user?.first_name}</h1>
+      <h1>
+        Welcome, {`${userData?.user.first_name} ${userData?.user.last_name}`}
+      </h1>
     </div>
   );
 }

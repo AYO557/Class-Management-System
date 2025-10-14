@@ -1,23 +1,23 @@
 import useAuthStore from "../store/authStore";
-import type { User } from "../libs/types";
+import type { UserData } from "../libs/types";
 import { useNavigate } from "react-router";
 
 export default function useAuth() {
   const navigate = useNavigate();
-  const { user, setUser } = useAuthStore();
+  const { userData, setUserData } = useAuthStore();
 
-  const logUserIn = (user: User) => {
-    setUser(user);
+  const logUserIn = (user: UserData) => {
+    setUserData(user);
   };
 
   const logUserOut = () => {
-    setUser(null);
+    setUserData(null);
     navigate("/auth/login");
   };
 
   return {
-    user,
-    setUser,
+    userData,
+    setUserData,
     logUserIn,
     logUserOut,
   };

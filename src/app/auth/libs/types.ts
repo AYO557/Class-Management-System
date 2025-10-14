@@ -4,10 +4,14 @@ interface RegisterForm extends BaseUser {
   terms: boolean;
 }
 
-interface User extends BaseUser {
-  id: string;
-  role: string;
+export interface CreateUserPayload extends BaseUser {
+  role?: string;
   password: string;
+}
+
+interface User extends BaseUser {
+  _id: string;
+  role: string;
 }
 
 interface BaseUser {
@@ -23,8 +27,13 @@ interface LoginForm {
 }
 
 interface AuthState {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  userData: UserData | null;
+  setUserData: (user: UserData | null) => void;
 }
 
-export type { RegisterForm, LoginForm, User, AuthState };
+interface UserData {
+  token: string;
+  user: User;
+}
+
+export type { RegisterForm, LoginForm, User, AuthState, UserData };

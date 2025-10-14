@@ -6,7 +6,8 @@ import FormHeader from "../components/form-header";
 import useRegisterForm from "../hooks/useRegisterForm";
 
 export default function RegisterPage() {
-  const { formData, setFormData, handleSubmit } = useRegisterForm();
+  const { formData, setFormData, handleSubmit, isCreateUserLoading } =
+    useRegisterForm();
 
   return (
     <>
@@ -95,6 +96,7 @@ export default function RegisterPage() {
 
           <Button
             type="submit"
+            isLoading={isCreateUserLoading}
             disabled={
               !formData.first_name ||
               !formData.last_name ||

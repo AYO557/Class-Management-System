@@ -3,13 +3,14 @@ import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import useAuth from "../auth/hooks/useAuth";
 import DesktopNav from "./components/desktop-nav";
 import MobileNav from "./components/mobile-nav";
+import type { UserData } from "../auth/libs/types";
 
 export default function MainLayout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { logUserIn, logUserOut } = useAuth();
   const userData = localStorage.getItem("user");
-  const user = userData ? JSON.parse(userData) : null;
+  const user: UserData | null = userData ? JSON.parse(userData) : null;
 
   //! handle user authorization
   useEffect(() => {

@@ -7,15 +7,16 @@ import {
   validateFirstName,
   validateLastName,
   validatePassword,
-  validatePhoneNumber,
+  // validatePhoneNumber,
 } from "../utils/validateForm";
-import useRegisterUserApi from "../api/useRegisterUser";
+// import useRegisterUserApi from "../api/useRegisterUser";
 import useToastMessage from "@/hooks/useToastMessage";
 import { useNavigate } from "react-router";
+import useCreateUserApi from "../api/useCreateUser";
 
 export default function useRegisterForm() {
   const navigate = useNavigate();
-  const { toastError } = useToastMessage();
+  const { toastError, toastSuccess } = useToastMessage();
   const [formData, setFormData] = useState<RegisterForm>({
     first_name: "",
     last_name: "",
@@ -26,21 +27,43 @@ export default function useRegisterForm() {
     terms: false,
   });
 
-  const { signUserUp } = useRegisterUserApi({
-    onSuccess: () => {
-      setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone_number: "",
-        password: "",
-        confirm_password: "",
-        terms: false,
-      });
+  // const { signUserUp } = useRegisterUserApi({
+  //   onSuccess: () => {
+  //     setFormData({
+  //       first_name: "",
+  //       last_name: "",
+  //       email: "",
+  //       phone_number: "",
+  //       password: "",
+  //       confirm_password: "",
+  //       terms: false,
+  //     });
 
-      navigate("/auth/login");
-    },
-  });
+  //     navigate("/auth/login");
+  //   },
+  // });
+
+  const { createUser, isCreateUserLoading, createUserError } = useCreateUserApi(
+    {
+      onSuccess: () => {
+        setFormData({
+          first_name: "",
+          last_name: "",
+          email: "",
+          phone_number: "",
+          password: "",
+          confirm_password: "",
+          terms: false,
+        });
+
+        toastSuccess("User created successfully");
+        navigate("/auth/login");
+      },
+      onError: (error) => {
+        toastError(error.message || "Sorry, Something went wrong.");
+      },
+    }
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,7 +72,8 @@ export default function useRegisterForm() {
 
     if (!isValid) return;
 
-    signUserUp(formData);
+    // signUserUp(formData);
+    createUser(formData);
   };
 
   const validateForm = () => {
@@ -57,7 +81,7 @@ export default function useRegisterForm() {
       first_name,
       last_name,
       email,
-      phone_number,
+      // phone_number,
       password,
       confirm_password,
       terms,
@@ -66,7 +90,7 @@ export default function useRegisterForm() {
     const validators = [
       validateFirstName(first_name),
       validateLastName(last_name),
-      validatePhoneNumber(phone_number),
+      // validatePhoneNumber(phone_number),
       validatePassword(password),
       validateConfirmPassword(password, confirm_password),
       validateAgreeToTerms(terms),
@@ -87,5 +111,7 @@ export default function useRegisterForm() {
     formData,
     setFormData,
     handleSubmit,
+    isCreateUserLoading,
+    createUserError,
   };
 }
