@@ -1,15 +1,15 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
-import type { LoginForm, UserData } from "../libs/types";
 import type { ErrorResponse, SuccessResponse } from "@/types/response";
 import { baseUrl } from "@/constants/api-data";
-import { baseEndpoint } from "../api-data";
+import { studentsEndpoint } from "../api-data";
+import type { BaseStudent, Student } from "../libs/types";
 
-export default async function loginUser(
-  data: LoginForm
-): Promise<SuccessResponse<UserData>> {
+export default async function createStudent(
+  data: BaseStudent
+): Promise<SuccessResponse<BaseStudent>> {
   try {
-    const response: AxiosResponse<SuccessResponse<UserData>> = await axios.post(
-      `${baseUrl}${baseEndpoint}/login`,
+    const response: AxiosResponse<SuccessResponse<Student>> = await axios.post(
+      `${baseUrl}${studentsEndpoint}`,
       data
     );
 

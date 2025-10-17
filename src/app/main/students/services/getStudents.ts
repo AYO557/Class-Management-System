@@ -1,18 +1,15 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
-import type { LoginForm, UserData } from "../libs/types";
 import type { ErrorResponse, SuccessResponse } from "@/types/response";
 import { baseUrl } from "@/constants/api-data";
-import { baseEndpoint } from "../api-data";
+import { studentsEndpoint } from "../api-data";
+import type { StudentsResponse } from "../libs/types";
 
-export default async function loginUser(
-  data: LoginForm
-): Promise<SuccessResponse<UserData>> {
+export default async function getStudents(): Promise<
+  SuccessResponse<StudentsResponse>
+> {
   try {
-    const response: AxiosResponse<SuccessResponse<UserData>> = await axios.post(
-      `${baseUrl}${baseEndpoint}/login`,
-      data
-    );
-
+    const response: AxiosResponse<SuccessResponse<StudentsResponse>> =
+      await axios.get(`${baseUrl}${studentsEndpoint}`);
     return response.data;
   } catch (error: AxiosError<ErrorResponse> | unknown) {
     throw new Error((error as AxiosError<ErrorResponse>).response?.data.error);

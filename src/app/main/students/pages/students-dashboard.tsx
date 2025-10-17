@@ -3,71 +3,40 @@ import PageHeader from "@/app/main/components/page-header";
 import { Plus } from "lucide-react";
 import { mockStudentStats } from "../libs/mock";
 import StatsCardsSection from "../../components/stat-cards-section";
-import studentsData from "../libs/students-data.json";
 import { useNavigate } from "react-router";
 import CustomTable from "../../components/table";
-import type { Column } from "../../components/table";
+import useGetStudentsApi from "../api/useGetStudents";
+import { columns } from "../libs/constants";
+import Loader from "@/components/ui/loader";
+import CustomError from "@/components/ui/error";
+import { useState } from "react";
+import type { Student } from "../libs/types";
 
 export default function StudentsPage() {
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-    },
-    {
-      title: "Class",
-      dataIndex: "class",
-      key: "class",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Parent",
-      dataIndex: "parent",
-      key: "parent",
-    },
-    {
-      title: "Parent Phone Number",
-      dataIndex: "parent_phone",
-      key: "parent_phone",
-    },
-    {
-      title: "Parent Email",
-      dataIndex: "parent_email",
-      key: "parent_email",
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-    },
-  ] as Column<(typeof studentsData)[0]>[];
-
   const navigate = useNavigate();
+  const [searchStudentsResult, setSearchStudentsResult] = useState<
+    Student[] | undefined
+  >();
+
+  const { studentsResponse, isStudentsLoading, studentsError } =
+    useGetStudentsApi();
+
+  const studentsData = studentsResponse?.data;
+
+  const handleSearch = (val: string) => {
+    const nameResult = studentsData?.filter((student) => {
+      return student.name.toLowerCase().includes(val.toLowerCase());
+    });
+
+    const emailResult = studentsData?.filter((student) => {
+      return student.email.toLowerCase().includes(val.toLowerCase());
+    });
+
+    const result =
+      nameResult && nameResult?.length > 0 ? nameResult : emailResult;
+
+    setSearchStudentsResult(result);
+  };
 
   return (
     <>
@@ -87,22 +56,32 @@ export default function StudentsPage() {
 
       <StatsCardsSection data={mockStudentStats} />
 
-      <CustomTable
-        columns={columns}
-        data={studentsData}
-        actions={[
-          {
-            label: "View",
-            onClick: (record) => navigate(`/students/${record.id}`),
-          },
-          {
-            label: "Edit",
-            onClick: (record) => navigate(`/students/${record.id}/edit`),
-          },
-        ]}
-        showSearch
-        searchPlaceholder="search student..."
-      />
+      {isStudentsLoading ? (
+        <Loader />
+      ) : studentsError ? (
+        <CustomError msg={studentsError.message} dataName="students" />
+      ) : (
+        <CustomTable
+          columns={columns}
+          data={searchStudentsResult || studentsData || []}
+          actions={[
+            {
+              label: "View",
+              onClick: (record) => navigate(`/students/${record._id}`),
+            },
+            {
+              label: "Edit",
+              onClick: (record) => navigate(`/students/${record._id}/edit`),
+            },
+          ]}
+          showSearch
+          searchPlaceholder="search student..."
+          showPagination={true}
+          pageSize={10}
+          selectable
+          onSearch={handleSearch}
+        />
+      )}
     </>
   );
 }

@@ -1,10 +1,17 @@
+import { FormInput } from "@/components/ui/input";
 import {
   MoreHorizontal,
   Search,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { type ReactNode, useState, useMemo } from "react";
+import React, {
+  type ReactNode,
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 
 export interface Column<T> {
   title: string;
@@ -20,7 +27,7 @@ export interface TableAction<T> {
   icon?: ReactNode;
 }
 
-interface CustomTableProps<T extends { id: string | number }> {
+interface CustomTableProps<T extends { _id: string | number }> {
   caption?: string;
   columns: Column<T>[];
   data: T[];
@@ -28,13 +35,13 @@ interface CustomTableProps<T extends { id: string | number }> {
   onSelectionChange?: (selectedIds: Array<string | number>) => void;
   actions?: TableAction<T>[];
   showSearch?: boolean;
-  onSearchClick?: () => void;
+  onSearch?: (value: string) => void;
   searchPlaceholder?: string;
   pageSize?: number;
   showPagination?: boolean;
 }
 
-export default function CustomTable<T extends { id: string | number }>({
+export default function CustomTable<T extends { _id: string | number }>({
   caption,
   columns,
   data,
@@ -42,7 +49,7 @@ export default function CustomTable<T extends { id: string | number }>({
   onSelectionChange,
   actions,
   showSearch = false,
-  onSearchClick,
+  onSearch,
   searchPlaceholder = "Search...",
   pageSize = 10,
   showPagination = false,
@@ -54,133 +61,101 @@ export default function CustomTable<T extends { id: string | number }>({
   const [showActionsFor, setShowActionsFor] = useState<string | number | null>(
     null
   );
+  const actionDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        actionDropdownRef.current &&
+        !actionDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowActionsFor(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const totalPages = Math.ceil(data.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
 
-  const paginatedData = useMemo(() => {
-    return showPagination ? data.slice(startIndex, endIndex) : data;
-  }, [data, startIndex, endIndex, showPagination]);
+  const paginatedData = useMemo(
+    () => (showPagination ? data.slice(startIndex, endIndex) : data),
+    [data, startIndex, endIndex, showPagination]
+  );
 
   const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      const allIds = new Set(paginatedData.map((record) => record.id));
-      setSelectedIds(allIds);
-      onSelectionChange?.(Array.from(allIds));
-    } else {
-      setSelectedIds(new Set());
-      onSelectionChange?.([]);
-    }
+    const allIds: Set<string | number> = checked
+      ? new Set(paginatedData.map((r) => r._id))
+      : new Set();
+    setSelectedIds(allIds);
+    onSelectionChange?.(Array.from(allIds));
   };
 
-  const handleSelectRow = (id: string | number, checked: boolean) => {
-    const newSelectedIds = new Set(selectedIds);
-    if (checked) {
-      newSelectedIds.add(id);
-    } else {
-      newSelectedIds.delete(id);
-    }
-    setSelectedIds(newSelectedIds);
-    onSelectionChange?.(Array.from(newSelectedIds));
+  const handleSelectRow = (_id: string | number, checked: boolean) => {
+    const newSelected = new Set(selectedIds);
+    if (checked) newSelected.add(_id);
+    else newSelected.delete(_id);
+    setSelectedIds(newSelected);
+    onSelectionChange?.(Array.from(newSelected));
   };
 
   const isAllSelected =
     paginatedData.length > 0 &&
-    paginatedData.every((record) => selectedIds.has(record.id));
-
+    paginatedData.every((r) => selectedIds.has(r._id));
   const isSomeSelected =
-    paginatedData.some((record) => selectedIds.has(record.id)) &&
-    !isAllSelected;
+    paginatedData.some((r) => selectedIds.has(r._id)) && !isAllSelected;
 
-  const renderCell = (record: T, column: Column<T>): ReactNode => {
-    if (column.key === "action") {
-      return (
-        <div className="relative">
-          <button
-            onClick={() =>
-              setShowActionsFor(showActionsFor === record.id ? null : record.id)
-            }
-            className="p-1 hover:bg-lightgraypurple/30 rounded transition-colors"
-          >
-            <MoreHorizontal size={20} className="cursor-pointer" />
-          </button>
-
-          {showActionsFor === record.id && actions && actions.length > 0 && (
-            <div className="absolute right-0 mt-1 bg-white shadow-lg rounded-lg border border-lightgraypurple/30 z-10 min-w-[150px]">
-              {actions.map((action, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    action.onClick(record);
-                    setShowActionsFor(null);
-                  }}
-                  className="w-full px-4 py-2 text-left text-darkpurple hover:bg-lightgraypurple/20 first:rounded-t-lg last:rounded-b-lg flex items-center gap-2 transition-colors"
-                >
-                  {action.icon}
-                  <span className="text-sm">{action.label}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    const value = record[column.dataIndex];
-    return typeof value === "object"
-      ? JSON.stringify(value)
-      : (value as ReactNode);
-  };
-
-  const goToPage = (page: number) => {
+  const goToPage = (page: number) =>
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
-  };
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 relative">
       {(caption || showSearch) && (
-        <div className="flex items-center justify-between mb-4 px-4">
+        <div className="flex items-center justify-between mb-4 px-1">
           {caption && (
             <h2 className="text-xl font-bold text-darkpurple">{caption}</h2>
           )}
           {showSearch && (
-            <button
-              onClick={onSearchClick}
-              className="flex items-center gap-2 px-4 py-2 bg-lightgraypurple hover:bg-quaternary text-white rounded-lg transition-colors"
-            >
-              <Search size={18} />
-              <span className="text-sm">{searchPlaceholder}</span>
-            </button>
+            <div>
+              <FormInput
+                name="search"
+                id="search"
+                type="search"
+                placeholder={searchPlaceholder}
+                startAdornment={<Search size={18} />}
+                onChange={(e) => onSearch?.(e.target.value)}
+              />
+            </div>
           )}
         </div>
       )}
 
       <div className="overflow-x-auto rounded-lg shadow-lg border border-lightgraypurple/30">
-        <table className="text-darkpurple border-collapse w-full bg-white">
+        <table className="text-darkpurple border-collapse w-full bg-white relative">
           <thead>
             <tr className="bg-lightgraypurple text-white">
               {selectable && (
-                <th className="text-left p-3 px-4">
+                <th className="p-3 px-4 text-left">
                   <input
                     type="checkbox"
                     checked={isAllSelected}
                     ref={(input) => {
-                      if (input) {
-                        input.indeterminate = isSomeSelected;
-                      }
+                      if (input) input.indeterminate = isSomeSelected;
                     }}
                     onChange={(e) => handleSelectAll(e.target.checked)}
                     className="w-4 h-4 rounded border-2 border-white cursor-pointer accent-secondary"
                   />
                 </th>
               )}
-              {columns.map((column) => (
+              {columns.map((col) => (
                 <th
-                  key={column.key}
+                  key={col.key}
                   className="text-left p-3 px-4 font-semibold text-sm uppercase tracking-wide"
                 >
-                  {column.title}
+                  {col.title}
                 </th>
               ))}
             </tr>
@@ -189,7 +164,7 @@ export default function CustomTable<T extends { id: string | number }>({
           <tbody>
             {paginatedData.map((record, index) => (
               <tr
-                key={record.id}
+                key={record._id}
                 className={`border-b border-lightgraypurple/20 hover:bg-lightgraypurple/10 transition-colors ${
                   index % 2 === 0 ? "bg-white" : "bg-lightgraypurple/5"
                 }`}
@@ -198,19 +173,65 @@ export default function CustomTable<T extends { id: string | number }>({
                   <td className="p-3 px-4">
                     <input
                       type="checkbox"
-                      checked={selectedIds.has(record.id)}
+                      checked={selectedIds.has(record._id)}
                       onChange={(e) =>
-                        handleSelectRow(record.id, e.target.checked)
+                        handleSelectRow(record._id, e.target.checked)
                       }
                       className="w-4 h-4 rounded border-2 border-lightgraypurple cursor-pointer accent-secondary"
                     />
                   </td>
                 )}
+
                 {columns.map((column) => (
-                  <td key={column.key} className="p-3 px-4 text-sm">
-                    {column.render
-                      ? column.render(record)
-                      : renderCell(record, column)}
+                  <td key={column.key} className="p-3 px-4 text-sm relative">
+                    {column.key === "action" && actions ? (
+                      <div className="relative" ref={actionDropdownRef}>
+                        <button
+                          onClick={() =>
+                            setShowActionsFor(
+                              showActionsFor === record._id ? null : record._id
+                            )
+                          }
+                          className="p-1 hover:bg-lightgraypurple/30 rounded transition-colors"
+                        >
+                          <MoreHorizontal size={20} />
+                        </button>
+
+                        {showActionsFor === record._id && (
+                          <div
+                            className="absolute right-0 z-50 min-w-[150px] bg-white shadow-lg rounded-lg border border-lightgraypurple/30"
+                            style={{
+                              top:
+                                index === paginatedData.length - 1
+                                  ? "-100%"
+                                  : "100%",
+                              marginTop:
+                                index === paginatedData.length - 1
+                                  ? "-0.5rem"
+                                  : "0.25rem",
+                            }}
+                          >
+                            {actions.map((action, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => {
+                                  action.onClick(record);
+                                  setShowActionsFor(null);
+                                }}
+                                className="w-full px-4 py-2 text-left text-darkpurple hover:bg-lightgraypurple/20 flex items-center gap-2 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                              >
+                                {action.icon}
+                                <span className="text-sm">{action.label}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ) : column.render ? (
+                      column.render(record)
+                    ) : (
+                      (record[column.dataIndex] as ReactNode)
+                    )}
                   </td>
                 ))}
               </tr>

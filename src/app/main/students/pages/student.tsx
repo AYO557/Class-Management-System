@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import {
   ArrowLeft,
   Mail,
@@ -20,21 +20,36 @@ import {
   Send,
   Upload,
 } from "lucide-react";
+import useGetStudentApi from "../api/useGetStudent";
+import Loader from "@/components/ui/loader";
+import CustomError from "@/components/ui/error";
 
 export default function ViewStudentPage() {
+  const { studentId } = useParams<{ studentId: string }>();
+  const { studentResponse, isStudentLoading, studentError } = useGetStudentApi({
+    studentId: studentId!,
+  });
   const [activeTab, setActiveTab] = useState("overview");
+  const studentData = studentResponse?.data;
+
+  if (isStudentLoading) return <Loader />;
+
+  if (studentError)
+    return <CustomError msg={studentError.message} dataName="student" />;
+
+  if (!studentData) return null;
 
   // Enhanced student data combining best from both
   const student: Student = {
     id: "STU-2024-001",
-    firstName: "Chioma",
-    lastName: "Okafor",
-    email: "chioma.okafor@bafuto.org",
-    phone: "+234 803 456 7890",
-    dateOfBirth: "1998-05-15",
-    gender: "Female",
-    nationality: "Nigerian",
-    address: "15 Ikeja Road, Lagos, Nigeria",
+    firstName: studentData?.name.split(" ")[0],
+    lastName: studentData?.name.split(" ")[1],
+    email: studentData?.email,
+    phone: studentData?.phone,
+    dateOfBirth: studentData?.dob,
+    gender: studentData?.gender,
+    nationality: studentData?.nationality,
+    address: studentData?.address,
     enrollmentDate: "2024-01-10",
     status: "Active",
 

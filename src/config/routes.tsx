@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy } from "react";
+import ErrorPage from "@/app/pages/error";
 
 //! layout
 const MainLayout = lazy(() => import("@/app/main/layout"));
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "dashboard",
@@ -82,6 +84,7 @@ const router = createBrowserRouter([
   {
     path: "auth",
     Component: AuthLayout,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "login",

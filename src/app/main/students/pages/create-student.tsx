@@ -6,12 +6,52 @@ import BasicDetailsForm from "../components/basic-details-form";
 import ParentDetailsForm from "../components/parent-details-form";
 import ReviewDetails from "../components/review-details";
 import Confirmation from "../components/confirmation";
+import useCreateStudentApi from "../api/useCreateStudent";
+import useToastMessage from "@/hooks/useToastMessage";
+import type { BaseStudent } from "../libs/types";
+import {
+  isStudentDetailsValid,
+  isParentDetailsValid,
+} from "../utils/validateStudentForm";
+import { useNavigate } from "react-router";
 
 const steps = ["Student Details", "Parent Details", "Review", "Confirmation"];
 
+export interface StudentFormData {
+  profilePicture: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  gender: string;
+  nationality: string;
+  religion: string;
+  address: string;
+  parentName: string;
+  parentEmail: string;
+  parentPhone: string;
+  parentOccupation: string;
+  relationship: string;
+  emergencyContact: string;
+}
+
 export default function CreateStudentPage() {
+  const navigate = useNavigate();
+  const { toastError, toastSuccess } = useToastMessage();
+
+  const { createStudent } = useCreateStudentApi({
+    onSuccess: () => {
+      toastSuccess("Student created successfully");
+      navigate("/students");
+    },
+    onError: (error) => {
+      toastError(error.message || "Sorry, Something went wrong.");
+    },
+  });
+
   const [activeStep, setActiveStep] = useState(0);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<StudentFormData>({
     // Student Details
     profilePicture: "",
     firstName: "",
@@ -31,16 +71,12 @@ export default function CreateStudentPage() {
     parentOccupation: "",
     relationship: "",
     emergencyContact: "",
-
-    // Academic Details
-    studentId: "",
-    grade: "",
-    section: "",
-    enrollmentDate: "",
   });
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
+      if (activeStep === 0 && !isStudentDetailsValid(formData)) return;
+      if (activeStep === 1 && !isParentDetailsValid(formData)) return;
       setActiveStep(activeStep + 1);
     }
   };
@@ -52,9 +88,24 @@ export default function CreateStudentPage() {
   };
 
   const handleSubmit = () => {
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-    handleNext();
+    const transformedPayload: BaseStudent = {
+      name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      phone: formData.phoneNumber,
+      dob: formData.dateOfBirth,
+      gender: formData.gender,
+      nationality: formData.nationality,
+      religion: formData.religion,
+      address: formData.address,
+      parentName: formData.parentName,
+      parentEmail: formData.parentEmail,
+      parentPhone: formData.parentPhone,
+      parentOccupation: formData.parentOccupation,
+      parentRelationship: formData.relationship,
+      parentAddress: formData.emergencyContact,
+    };
+
+    createStudent(transformedPayload);
   };
 
   const updateFormData = (newData: Partial<typeof formData>) => {
