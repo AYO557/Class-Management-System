@@ -1,6 +1,6 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
 import type { CreateUserPayload, User } from "../libs/types";
-import type { ErrorResponse, SuccessResponse } from "@/types/response";
+import type { ErrorResponse, SuccessResponse } from "@/libs/types/api-response";
 import { baseUrl } from "@/constants/api-data";
 import { baseEndpoint } from "../api-data";
 

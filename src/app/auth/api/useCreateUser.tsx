@@ -1,4 +1,4 @@
-import type { SuccessResponse } from "@/types/response";
+import type { SuccessResponse } from "@/libs/types/api-response";
 import type { CreateUserPayload, User } from "../libs/types";
 import createUser from "../services/createUser";
 import { useMutation } from "@tanstack/react-query";

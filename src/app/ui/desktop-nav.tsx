@@ -1,0 +1,19 @@
+import Logo from "./logo";
+import LogOutButton from "./logout-button";
+import Menu from "./menu";
+
+export default function DesktopNav() {
+  return (
+    <div className="col-span-1 h-full bg-darkpurple/90 lg:flex hidden flex-col justify-between py-4 overflow-y-auto">
+      <div className="flex flex-col justify-between h-full max-h-[900px]">
+        <div className="xl:h-[50%] flex flex-col justify-between">
+          <Logo />
+
+          <Menu />
+        </div>
+
+        <LogOutButton />
+      </div>
+    </div>
+  );
+}

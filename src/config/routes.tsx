@@ -1,38 +1,27 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy } from "react";
-import ErrorPage from "@/app/pages/error";
+import type { RouteObject } from "react-router";
 
 //! layout
-const MainLayout = lazy(() => import("@/app/main/layout"));
-const AuthLayout = lazy(() => import("@/app/auth/layout"));
+import ErrorPage from "@/app/layouts/error";
+import { studentRoutes } from "@/app/students/routes/student-routes";
+import { instructorRoutes } from "@/app/instructor/routes/instructor-routes";
+const NotFoundPage = lazy(() => import("@/app/layouts/not-found"));
+
+//! Main
+const MainLayout = lazy(() => import("@/app/layouts/main-layout"));
+const DashboardPage = lazy(() => import("@/app/dashboard/pages/dashboard"));
 
 //! Auth
+const AuthLayout = lazy(() => import("@/app/layouts/auth-layout"));
 const LoginPage = lazy(() => import("@/app/auth/pages/login"));
-const RegisterPage = lazy(() => import("@/app/auth/pages/register"));
 const ForgotPasswordPage = lazy(
   () => import("@/app/auth/pages/forgot-password")
 );
+
 const ResetPasswordPage = lazy(() => import("@/app/auth/pages/reset-password"));
 
-//! Main
-const DashboardPage = lazy(
-  () => import("@/app/main/dashboard/pages/dashboard")
-);
-const StudentsDashboardPage = lazy(
-  () => import("@/app/main/students/pages/students-dashboard")
-);
-const StudentPage = lazy(() => import("@/app/main/students/pages/student"));
-const CreateStudentPage = lazy(
-  () => import("@/app/main/students/pages/create-student")
-);
-const EditStudentPage = lazy(
-  () => import("@/app/main/students/pages/edit-student")
-);
-const ClassesPage = lazy(() => import("@/app/main/class/pages/classes"));
-
-const NotFoundPage = lazy(() => import("@/app/pages/not-found"));
-
-const router = createBrowserRouter([
+export const routes: RouteObject[] = [
+  //! Main
   {
     path: "/",
     Component: MainLayout,
@@ -50,37 +39,20 @@ const router = createBrowserRouter([
         path: "profile",
         Component: () => <div>Profile</div>,
       },
+
       {
         path: "students",
-        children: [
-          {
-            path: "",
-            Component: StudentsDashboardPage,
-          },
-          {
-            path: "create",
-            Component: CreateStudentPage,
-          },
-          {
-            path: ":studentId",
-            Component: StudentPage,
-          },
-          {
-            path: ":studentId/edit",
-            Component: EditStudentPage,
-          },
-        ],
+        children: studentRoutes,
       },
+
       {
-        path: "teachers",
-        Component: () => <div>Teachers</div>,
-      },
-      {
-        path: "classes",
-        Component: ClassesPage,
+        path: "instructors",
+        children: instructorRoutes,
       },
     ],
   },
+
+  //! Auth
   {
     path: "auth",
     Component: AuthLayout,
@@ -89,10 +61,6 @@ const router = createBrowserRouter([
       {
         path: "login",
         Component: LoginPage,
-      },
-      {
-        path: "register",
-        Component: RegisterPage,
       },
       {
         path: "forgot-password",
@@ -104,12 +72,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  //! Not Found
   {
     path: "*",
     Component: NotFoundPage,
   },
-]);
-
-export default function RoutesConfig() {
-  return <RouterProvider router={router} />;
-}
+];

@@ -1,10 +1,10 @@
-export default function Loader({ msg = "Loading" }: { msg?: string }) {
+export default function Loader({ msg = "Loading Data" }: { msg?: string }) {
   return (
-    <div className="h-[100vh] flex flex-col justify-center items-center">
-      <div className="bg-darkpurple/80 rounded-full size-32 animate-bounce flex justify-center pt-6 pl-8 shadow-2xl shadow-lightgraypurple">
-        <div className="size-10 bg-purple-400/50 rounded-full blur-sm animate-spin"></div>
+    <div className="h-[80vh] flex flex-col justify-center items-center">
+      <div className="bg-darkpurple/80 rounded-full size-24 animate-bounce flex justify-center pt-4 pl-6 shadow-2xl shadow-lightgraypurple">
+        <div className="size-8 bg-purple-400/50 rounded-full blur-sm animate-spin"></div>
       </div>
-      <h2>{msg}...</h2>
+      <h2 className="xl:text-xl text-lg font-bold">{msg}...</h2>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import loginUser from "../services/loginUser";
 import { useMutation } from "@tanstack/react-query";
 import type { LoginForm, UserData } from "../libs/types";
-import type { SuccessResponse } from "@/types/response";
+import type { SuccessResponse } from "@/libs/types/api-response";
 
 interface UseLogUserApiProps {
   onSuccess?: (data: SuccessResponse<UserData>) => void;
